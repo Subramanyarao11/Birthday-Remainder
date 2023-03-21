@@ -1,6 +1,5 @@
 import dbconnection from "@/lib/dbconn";
 import Birthday from "@/models/Birthday";
-import birthday from "./birthday";
 dbconnection();
 
 export default async (req, res) => {

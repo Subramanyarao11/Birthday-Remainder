@@ -1,6 +1,45 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
+import axios from 'axios'
+import api from '@/services/api';
+// export async function getServerSideProps() {
+//     try {
+//         let response = await fetch('http://localhost:3000/api/birthday');
+//         let birthdays = await response.json();
+
+//         return {
+//             props: { birthdays: JSON.parse(JSON.stringify(birthdays)) },
+//         };
+//     } catch (e) {
+//         console.error(e);
+//     }
+// }
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function Table() {
+    const [birthdays, setbirthdays] = useState([])
+    useEffect(() => {
+        try {
+            axios.get("http://localhost:3000/api/birthday")
+                .then(({ data }) => {
+                    setbirthdays(data.data)
+                })
+        } catch (error) {
+            if (error.code === 'ECONNABORTED')
+                return 'timeout';
+            else
+                throw error;
+        }
+
+    }, [birthdays])
+
+    const deleteBirthday = async (id) => {
+        await api.delete(`/${id}`);
+        // mutate('courses');
+    };
+
     return (
         <>
             <main className='flex items-center justify-center'>
@@ -16,9 +55,11 @@ function Table() {
                                     </svg>
                                     <input type="text" className="py-2.5 pl-1 w-40 sm:w-64 focus:outline-none text-sm rounded-md text-gray-600 placeholder-gray-400" placeholder="Search Birthday" />
                                 </div>
-                                <button onClick="popuphandler(true)" className="inline-flex ml-3 whitespace-nowrap items-start justify-start px-6 py-3 bg-blue-600 hover:bg-blue-500 focus:outline-none rounded">
-                                    <p className="text-xs sm:text-sm font-medium leading-none text-white">Search</p>
-                                </button>
+                                <Link href="/add" legacyBehavior>
+                                    <a className="inline-flex cursor-pointer ml-3 whitespace-nowrap items-start justify-start px-6 py-3 bg-blue-600 hover:bg-blue-500 focus:outline-none rounded">
+                                        <span className="text-xs sm:text-sm font-medium leading-none text-white">Add Birthday</span>
+                                    </a>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -33,20 +74,27 @@ function Table() {
                                     </tr>
                                 </thead>
                                 <tbody className="w-full">
-                                    <tr className="h-20 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-50">
-                                        <td className="pl-10">
-                                            <div className="flex items-center">
-                                                Miracle Botos
-                                            </div>
-                                        </td>
-                                        <td className="pl-4">06/02/2020</td>
-                                        <td className="pl-10">
-                                            <div className="flex items-center">
-                                                <button className="focus:outline-none bg-gray-100 mr-5 hover:bg-gray-200 py-2.5 px-5 rounded text-sm leading-3 text-gray-500">Edit</button>
-                                                <button className="focus:outline-none bg-gray-100 mr-5 hover:bg-gray-200 py-2.5 px-5 rounded text-sm leading-3 text-gray-500">Delete</button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    {
+                                        birthdays.map((bd) => (
+                                            <tr className="h-20 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-50">
+                                                <td className="pl-10">
+                                                    <div className="flex items-center">
+                                                        {capitalizeFirstLetter(bd.name)}
+                                                    </div>
+                                                </td>
+                                                <td className="pl-4">{bd.date}</td>
+                                                <td className="pl-10">
+                                                    <div className="flex items-center">
+                                                        <Link href={`/edit/${bd._id}`} legacyBehavior>
+                                                            <a className="focus:outline-none bg-gray-200 mr-5 hover:bg-gray-100 py-2.5 px-5 rounded text-sm leading-3 text-gray-500">Edit</a>
+                                                        </Link>
+                                                        <a onClick={() => deleteBirthday(bd._id)} className="focus:outline-none cursor-pointer bg-red-600 mr-5 hover:bg-red-500 py-2.5 px-5 rounded text-sm leading-3 text-gray-100">Delete</a>0
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    }
                                 </tbody>
                             </table>
                         </div>
