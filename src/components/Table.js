@@ -88,7 +88,7 @@ function Table() {
                                                         <Link href={`/edit/${bd._id}`} legacyBehavior>
                                                             <a className="focus:outline-none bg-gray-200 mr-5 hover:bg-gray-100 py-2.5 px-5 rounded text-sm leading-3 text-gray-500">Edit</a>
                                                         </Link>
-                                                        <a onClick={() => deleteBirthday(bd._id)} className="focus:outline-none cursor-pointer bg-red-600 mr-5 hover:bg-red-500 py-2.5 px-5 rounded text-sm leading-3 text-gray-100">Delete</a>0
+                                                        <a onClick={() => deleteBirthday(bd._id)} className="focus:outline-none cursor-pointer bg-red-600 mr-5 hover:bg-red-500 py-2.5 px-5 rounded text-sm leading-3 text-gray-100">Delete</a>
 
                                                     </div>
                                                 </td>

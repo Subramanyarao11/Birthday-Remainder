@@ -1,8 +1,26 @@
 import dbconnection from "@/lib/dbconn";
 import Birthday from "@/models/Birthday";
+import Cors from 'cors'
 dbconnection();
 
+const cors = Cors({
+    methods: ['GET', 'POST'],
+})
+
+function runMiddleware(req, res, fn) {
+    return new Promise((resolve, reject) => {
+        fn(req, res, (result) => {
+            if (result instanceof Error) {
+                return reject(result)
+            }
+
+            return resolve(result)
+        })
+    })
+}
+
 export default async (req, res) => {
+    await runMiddleware(req, res, cors)
     const { method } = req;
     switch (method) {
         case "GET":
