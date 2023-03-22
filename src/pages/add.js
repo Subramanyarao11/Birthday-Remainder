@@ -11,7 +11,7 @@ const add = () => {
 
     const addBirthday = async (e) => {
         e.preventDefault();
-        await axios.post("http://localhost:3000/api/birthday", {
+        await axios.post("/api/birthday", {
             name: name,
             date: date,
         });

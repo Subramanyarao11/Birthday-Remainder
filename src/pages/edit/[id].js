@@ -12,7 +12,7 @@ const Editcourse = () => {
 
     const updateBirthday = async (e) => {
         e.preventDefault();
-        await axios.put(`http://localhost:3000/api/${id}`, {
+        await axios.put(`/api/${id}`, {
             name: name,
             date: date,
         });

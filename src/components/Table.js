@@ -22,7 +22,7 @@ function Table() {
     const [birthdays, setbirthdays] = useState([])
     useEffect(() => {
         try {
-            axios.get("http://localhost:3000/api/birthday")
+            axios.get("/api/birthday")
                 .then(({ data }) => {
                     setbirthdays(data.data)
                 })
