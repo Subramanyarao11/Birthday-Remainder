@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React, { useState } from "react";
 import { Router, useRouter } from 'next/router'
 import axios from "axios";
-import api from "@/services/api";
+// import api from "@/services/api";
 
 const add = () => {
     const router = useRouter()
@@ -11,7 +11,7 @@ const add = () => {
 
     const addBirthday = async (e) => {
         e.preventDefault();
-        await api.post("/birthday", {
+        await axios.post("http://localhost:3000/api/birthday", {
             name: name,
             date: date,
         });

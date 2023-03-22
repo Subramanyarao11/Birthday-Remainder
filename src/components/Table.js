@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-import api from '@/services/api';
+// import api from '@/services/api';
 // export async function getServerSideProps() {
 //     try {
 //         let response = await fetch('http://localhost:3000/api/birthday');
@@ -36,8 +36,8 @@ function Table() {
     }, [birthdays])
 
     const deleteBirthday = async (id) => {
-        await api.delete(`/${id}`);
-        // mutate('courses');
+        // await api.delete(`/${id}`);
+        await axios.delete(`http://localhost:3000/api/${id}`)
     };
 
     return (

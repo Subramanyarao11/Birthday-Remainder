@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import api from "@/services/api";
+// import api from "@/services/api";
 import { useRouter } from 'next/router'
 
 const Editcourse = () => {
@@ -12,7 +12,7 @@ const Editcourse = () => {
 
     const updateBirthday = async (e) => {
         e.preventDefault();
-        await api.put(`/${id}`, {
+        await axios.put(`http://localhost:3000/api/${id}`, {
             name: name,
             date: date,
         });
