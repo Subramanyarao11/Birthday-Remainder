@@ -2,18 +2,27 @@ import Head from 'next/head'
 import React, { useState } from "react";
 import { Router, useRouter } from 'next/router'
 import axios from "axios";
-// import api from "@/services/api";
 
 const add = () => {
     const router = useRouter()
     const [name, setName] = useState("");
-    const [date, setDate] = useState("");
+    // const [date, setDate] = useState("");
+
+
+    // Experimenting
+
+    const [month, setMonth] = useState(0)
+    const [date, setDate] = useState(0)
 
     const addBirthday = async (e) => {
         e.preventDefault();
+        const myDate = new Date();
+        myDate.setMonth(month - 1);
+        myDate.setDate(date);
+        myDate.setHours(0, 0, 0, 0);
         await axios.post("/api/birthday", {
             name: name,
-            date: date,
+            date: myDate,
         });
         router.push("/")
     };
@@ -33,22 +42,60 @@ const add = () => {
                             <label className="font-bold text-slate-700">Name</label>
                             <input
                                 type="text"
+                                required={true}
                                 className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
                                 placeholder="Enter Name"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </div>
-                        <div className="mb-5">
+                        {/* Before Experimenting */}
+                        {/* <div className="mb-5">
                             <label className="font-bold text-slate-700">Date</label>
                             <input
                                 type="date"
                                 className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
-                                placeholder="Course link"
+                                placeholder="Enter Date"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                            />
+                        </div> */}
+                        {/* Experimenting */}
+                        {/* For Month */}
+                        <div className="mb-5">
+                            <label className="font-bold text-slate-700">Month Number</label>
+                            <input
+                                type="number"
+                                min="1" max="12"
+                                minLength="1"
+                                maxLength="2"
+                                size="2"
+                                required={true}
+                                className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                placeholder="Enter Month Number"
+                                value={month}
+                                onChange={(e) => setMonth(e.target.value)}
+                            />
+                        </div>
+
+                        {/* For Date */}
+
+                        <div className="mb-5">
+                            <label className="font-bold text-slate-700">Date</label>
+                            <input
+                                type="number"
+                                min="1" max="31"
+                                minLength="1"
+                                maxLength="2"
+                                size="2"
+                                required={true}
+                                className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
+                                placeholder="Enter Date"
                                 value={date}
                                 onChange={(e) => setDate(e.target.value)}
                             />
                         </div>
+                        {/* End of Experiment */}
                         <button
                             type="submit"
                             className="w-full py-3 font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow"

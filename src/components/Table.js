@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
-// import api from '@/services/api';
 // export async function getServerSideProps() {
 //     try {
 //         let response = await fetch('http://localhost:3000/api/birthday');
@@ -14,6 +13,8 @@ import axios from 'axios'
 //         console.error(e);
 //     }
 // }
+
+// Utility Function to Uppercase first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -36,9 +37,21 @@ function Table() {
     }, [birthdays])
 
     const deleteBirthday = async (id) => {
-        // await api.delete(`/${id}`);
-        await axios.delete(`http://localhost:3000/api/${id}`)
+        await axios.delete(`/api/${id}`)
     };
+
+    // Custom Function to Return Fromatted Date
+
+    const formatDate = (date) => {
+        const formattedDateObj = new Date(date);
+        const options = {
+            day: 'numeric',
+            month: "long"
+        };
+
+        const formattedDateStr = formattedDateObj.toLocaleDateString('en-US', options);
+        return formattedDateStr
+    }
 
     return (
         <>
@@ -82,7 +95,7 @@ function Table() {
                                                         {capitalizeFirstLetter(bd.name)}
                                                     </div>
                                                 </td>
-                                                <td className="pl-4">{bd.date}</td>
+                                                <td className="pl-4">{formatDate(bd.date)}</td>
                                                 <td className="pl-10">
                                                     <div className="flex items-center">
                                                         <Link href={`/edit/${bd._id}`} legacyBehavior>
