@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import axios from 'axios'
+import useSWR from 'swr'
+import { mutate } from "swr"
+import Loader from './Loader'
 // export async function getServerSideProps() {
 //     try {
 //         let response = await fetch('http://localhost:3000/api/birthday');
@@ -20,25 +23,21 @@ function capitalizeFirstLetter(string) {
 }
 
 function Table() {
-    const [birthdays, setbirthdays] = useState([])
-    useEffect(() => {
-        try {
-            axios.get("/api/birthday")
-                .then(({ data }) => {
-                    setbirthdays(data.data)
-                })
-        } catch (error) {
-            if (error.code === 'ECONNABORTED')
-                return 'timeout';
-            else
-                throw error;
-        }
+    const fetcher = async () => {
+        const res = await axios.get("/api/birthday");
+        return res.data.data;
+    }
 
-    }, [birthdays])
+    const { data, error } = useSWR('birthdays', fetcher)
+
+    if (error) return <div className='text-center text-red-800'>failed to load</div>
+    if (!data) return <Loader />
 
     const deleteBirthday = async (id) => {
         await axios.delete(`/api/${id}`)
+        mutate('birthdays');
     };
+
 
     // Custom Function to Return Fromatted Date
 
@@ -88,7 +87,7 @@ function Table() {
                                 </thead>
                                 <tbody className="w-full">
                                     {
-                                        birthdays.map((bd) => (
+                                        data.map((bd) => (
                                             <tr className="h-20 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-50">
                                                 <td className="pl-10">
                                                     <div className="flex items-center">

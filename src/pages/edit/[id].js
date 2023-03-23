@@ -44,18 +44,6 @@ const Editcourse = () => {
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </div>
-                        {/* <div className="mb-5">
-                            <label className="font-bold text-slate-700">Date</label>
-                            <input
-                                type="date"
-                                className="w-full py-3 mt-1 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow"
-                                placeholder="Update Birthday"
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                            />
-                        </div> */}
-                        {/* Experimenting */}
-                        {/* For Month */}
                         <div className="mb-5">
                             <label className="font-bold text-slate-700">Month Number</label>
                             <input
@@ -89,7 +77,6 @@ const Editcourse = () => {
                                 onChange={(e) => setDate(e.target.value)}
                             />
                         </div>
-                        {/* End of Experiment */}
                         <button
                             type="submit"
                             className="w-full py-3 font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow"
