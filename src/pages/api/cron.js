@@ -18,6 +18,6 @@ export default async function handler(req, res) {
             console.log(`Sent message to Subramanya's Number at ${birthday.date}: ${message.sid}`);
         }
     } catch (error) {
-        console.error(err);
+        console.error(error);
     }
 }
