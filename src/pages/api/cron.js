@@ -1,10 +1,10 @@
 import dbconnection from "@/lib/dbconn";
+import Birthday from "@/models/Birthday";
 
 dbconnection()
 export default async function handler(req, res) {
     try {
-        const birthdays = await db
-            .collection('birthdays')
+        const birthdays = await Birthday
             .find({ date: new Date() })
             .toArray();
         for (const birthday of birthdays) {
