@@ -1,21 +1,30 @@
 import dbconnection from "@/lib/dbconn";
 import Birthday from "@/models/Birthday";
+import twilio from 'twilio';
 
-dbconnection()
+dbconnection();
+
 export default async function handler(req, res) {
     try {
-        const query = Birthday.find({ date: new Date() }).lean();
+        const today = new Date();
+        const query = Birthday.find({ date: today }).select('name date -_id').lean().limit(5);
         const birthdays = await query.exec();
-        for (const birthday of birthdays) {
-            const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-            const message = await client.messages.create({
+        if (birthdays.length === 0) {
+            console.log(`No birthdays on ${today}`);
+            return;
+        }
+        const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+        const messages = await Promise.all(birthdays.map(async (birthday) => {
+            return client.messages.create({
                 messagingServiceSid: 'MG19c8d8f851ee2e2525446fc35d1667ab',
                 body: `Subramanya, Today is ${birthday.name}'s Birthday!. Don't Forget to wish🎉`,
                 from: process.env.TWILIO_PHONE_NUMBER,
                 to: '8310251513',
             });
-            console.log(`Sent message to Subramanya's Number at ${birthday.date}: ${message.sid}`);
-        }
+        }));
+        messages.forEach((message, index) => {
+            console.log(`Sent message to ${birthdays[index].name} at ${birthdays[index].date}: ${message.sid}`);
+        });
     } catch (error) {
         console.error(error);
     }
