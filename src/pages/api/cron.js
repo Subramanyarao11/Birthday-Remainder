@@ -4,9 +4,8 @@ import Birthday from "@/models/Birthday";
 dbconnection()
 export default async function handler(req, res) {
     try {
-        const birthdays = await Birthday
-            .find({ date: new Date() })
-            .toArray();
+        const query = Birthday.find({ date: new Date() }).lean();
+        const birthdays = await query.exec();
         for (const birthday of birthdays) {
             const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
             const message = await client.messages.create({
