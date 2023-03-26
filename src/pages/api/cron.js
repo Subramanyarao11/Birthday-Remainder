@@ -11,6 +11,7 @@ export default async function handler(req, res) {
         const birthdays = await query.exec();
         if (birthdays.length === 0) {
             console.log(`No birthdays on ${today}`);
+            res.send({ message: "No Birthdays Today" })
             return;
         }
         const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -25,6 +26,7 @@ export default async function handler(req, res) {
         messages.forEach((message, index) => {
             console.log(`Sent message to ${birthdays[index].name} at ${birthdays[index].date}: ${message.sid}`);
         });
+        res.send({ message: "All message sent successfully." })
     } catch (error) {
         console.error(error);
     }
